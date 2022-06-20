@@ -47,9 +47,13 @@ app.get('/api/db/mediaObjArr', (request, response) => {
 
 app.get('/api/db/mediaObjArr/:id', (request, response) => {
   const id = Number(request.params.id)
-  console.log(request.params)
   const mediaObj = db.mediaObjArr.find(mediaObj => mediaObj.id === id)
-  response.json(mediaObj)
+  
+  if (note) {
+    response.json(mediaObj)
+  } else {
+    response.status(404).end()
+  }
 })
 
 const PORT = 3001
