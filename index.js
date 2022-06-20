@@ -49,11 +49,18 @@ app.get('/api/db/mediaObjArr/:id', (request, response) => {
   const id = Number(request.params.id)
   const mediaObj = db.mediaObjArr.find(mediaObj => mediaObj.id === id)
   
-  if (note) {
+  if (mediaObj) {
     response.json(mediaObj)
   } else {
     response.status(404).end()
   }
+})
+
+app.delete('/api/db/mediaObjArr/:id', (request, response) => {
+  const id = Number(request.params.id)
+  db.mediaObjArr = db.mediaObjArr.filter(mediaObj => mediaObj.id !== id)
+
+  response.status(204).end()
 })
 
 const PORT = 3001

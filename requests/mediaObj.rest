@@ -1,0 +1,5 @@
+GET http://localhost:3001/api/db/mediaObjArr/3
+
+###
+
+DELETE http://localhost:3001/api/db/mediaObjArr/3
