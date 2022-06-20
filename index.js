@@ -40,8 +40,11 @@ let db = {
 }
 
 app.get('/info', (request, response) => {
-  response.send(`<h1>${db.userData.userName}'s backlog contains ` +
-      `${db.mediaObjArr.length} pieces of media</h1>`)
+  response.send(
+    `<p>${db.userData.userName}'s backlog contains ` +
+        `${db.mediaObjArr.length} pieces of media</p>` +
+    `<p>${new Date()}</p>`
+  )
 })
 
 app.get('/api/db', (request, response) => {
