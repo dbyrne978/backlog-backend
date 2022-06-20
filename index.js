@@ -10,24 +10,28 @@ let db = {
   "mediaObjArr": [
     {
       "id": 1,
+      "dateCreated": new Date(),
       "title": "13 Sentinels",
       "medium": "Video Game",
       "progress": true
     },
     {
       "id": 2,
+      "dateCreated": new Date(),
       "title": "Buffy: the Vampire Slayer",
       "medium": "TV Show",
       "progress": false
     },
     {
       "id": 3,
+      "dateCreated": new Date(),
       "title": "Chronicle",
       "medium": "Movie",
       "progress": false
     },
     {
       "id": 4,
+      "dateCreated": new Date(),
       "title": "Blood of Elves",
       "medium": "Book",
       "progress": true
@@ -89,6 +93,7 @@ app.post('/api/db/mediaObjArr', (request, response) => {
   
   const mediaObj = {
     id: generateId(),
+    dateCreated: new Date(),
     title: body.title,
     medium: body.medium,
     progress: body.progress || false
