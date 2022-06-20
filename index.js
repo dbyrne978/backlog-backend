@@ -41,6 +41,17 @@ app.get('/api/db', (request, response) => {
   response.json(db)
 })
 
+app.get('/api/db/mediaObjArr', (request, response) => {
+  response.json(db.mediaObjArr)
+})
+
+app.get('/api/db/mediaObjArr/:id', (request, response) => {
+  const id = Number(request.params.id)
+  console.log(request.params)
+  const mediaObj = db.mediaObjArr.find(mediaObj => mediaObj.id === id)
+  response.json(mediaObj)
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
