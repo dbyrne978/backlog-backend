@@ -75,7 +75,7 @@ app.delete('/api/db/mediaObjArr/:id', (request, response) => {
 
 const generateId = () => {
   const maxId = db.mediaObjArr.length > 0
-    ? Math.max(...db.mediaObjArr.map(n => n.id)) 
+    ? Math.max(...db.mediaObjArr.map(n => n.id))
     : 0
   return maxId + 1
 }
@@ -92,6 +92,13 @@ app.post('/api/db/mediaObjArr', (request, response) => {
   if (!body.medium) {
     return response.status(400).json({ 
       error: 'medium missing' 
+    })
+  }
+
+  const titleMediumPairs = db.mediaObjArr.map(n => `${n.title}/${n.medium}`)
+  if (titleMediumPairs.includes(`${body.title}/${body.medium}`)) {
+    return response.status(400).json({ 
+      error: 'title/medium combo already exists' 
     })
   }
   
