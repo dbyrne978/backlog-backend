@@ -39,8 +39,9 @@ let db = {
   ]
 }
 
-app.get('/', (request, response) => {
-  response.send('<h1>Backlog API Front Page</h1>')
+app.get('/info', (request, response) => {
+  response.send(`<h1>${db.userData.userName}'s backlog contains ` +
+      `${db.mediaObjArr.length} pieces of media</h1>`)
 })
 
 app.get('/api/db', (request, response) => {
