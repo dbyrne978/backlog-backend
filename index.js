@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let db = {
   "userData": {
     "userName": "Dan"
@@ -61,6 +63,40 @@ app.delete('/api/db/mediaObjArr/:id', (request, response) => {
   db.mediaObjArr = db.mediaObjArr.filter(mediaObj => mediaObj.id !== id)
 
   response.status(204).end()
+})
+
+const generateId = () => {
+  const maxId = db.mediaObjArr.length > 0
+    ? Math.max(...db.mediaObjArr.map(n => n.id)) 
+    : 0
+  return maxId + 1
+}
+
+app.post('/api/db/mediaObjArr', (request, response) => {
+  const body = request.body
+
+  if (!body.title) {
+    return response.status(400).json({ 
+      error: 'title missing' 
+    })
+  }
+
+  if (!body.medium) {
+    return response.status(400).json({ 
+      error: 'medium missing' 
+    })
+  }
+  
+  const mediaObj = {
+    id: generateId(),
+    title: body.title,
+    medium: body.medium,
+    progress: body.progress || false
+  }
+
+  db.mediaObjArr = db.mediaObjArr.concat(mediaObj)
+
+  response.json(mediaObj)
 })
 
 const PORT = 3001
