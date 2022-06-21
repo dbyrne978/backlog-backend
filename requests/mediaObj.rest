@@ -10,5 +10,10 @@ POST http://localhost:3001/api/db/mediaObjArr
 Content-Type: application/json
 
 {
-      "medium": "Book"
+  "title": "13 Sentinels",
+  "medium": "Book"
 }
+
+###
+
+PUT http://localhost:3001/api/db/mediaObjArr/2
