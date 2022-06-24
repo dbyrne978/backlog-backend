@@ -16,4 +16,4 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3001/api/db/mediaObjArr/2
+POST http://localhost:3001/api/db/mediaObjArr

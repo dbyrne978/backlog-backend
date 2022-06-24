@@ -1,5 +1,6 @@
 const morgan = require('morgan')
 const express = require('express')
+const cors = require('cors')
 const app = express()
 
 // data
@@ -41,10 +42,11 @@ let db = {
 
 // middleware
 app.use(express.json())
+app.use(cors())
 
-morgan.token('body', (req, res) => JSON.stringify(req.body))
-app.use(morgan(':method :url :status :res[content-length] - ' +
-    ':response-time ms -- :body'))
+morgan.token('req-body', (req, res) => JSON.stringify(req.body))
+app.use(morgan('[:date[clf]] :method :url :status :res[content-length] - ' +
+    ':response-time ms -- :req-body'))
 
 // routes
 app.get('/info', (request, response) => {
@@ -57,6 +59,10 @@ app.get('/info', (request, response) => {
 
 app.get('/api/db', (request, response) => {
   response.json(db)
+})
+
+app.get('/api/db/userData', (request, response) => {
+  response.json(db.userData)
 })
 
 app.get('/api/db/mediaObjArr', (request, response) => {
