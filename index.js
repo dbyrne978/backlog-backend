@@ -75,14 +75,9 @@ app.get('/api/db/mediaObjArr', (request, response) => {
 })
 
 app.get('/api/db/mediaObjArr/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const mediaObj = db.mediaObjArr.find(mediaObj => mediaObj.id === id)
-  
-  if (mediaObj) {
+  MediaObj.findById(request.params.id).then(mediaObj => {
     response.json(mediaObj)
-  } else {
-    response.status(404).end()
-  }
+  })
 })
 
 app.delete('/api/db/mediaObjArr/:id', (request, response) => {
