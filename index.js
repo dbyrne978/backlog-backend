@@ -1,7 +1,9 @@
+require('dotenv').config()
 const morgan = require('morgan')
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const MediaObj = require('./models/mediaObj')
 
 // data
 let db = {
@@ -67,7 +69,9 @@ app.get('/api/db/userData', (request, response) => {
 })
 
 app.get('/api/db/mediaObjArr', (request, response) => {
-  response.json(db.mediaObjArr)
+  MediaObj.find({}).then(mediaObjArr => {
+    response.json(mediaObjArr)
+  })
 })
 
 app.get('/api/db/mediaObjArr/:id', (request, response) => {
@@ -138,7 +142,7 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 // listener
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
