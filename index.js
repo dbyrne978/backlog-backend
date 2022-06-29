@@ -92,13 +92,6 @@ app.delete('/api/db/mediaObjArr/:id', (request, response) => {
   response.status(204).end()
 })
 
-const generateId = () => {
-  const maxId = db.mediaObjArr.length > 0
-    ? Math.max(...db.mediaObjArr.map(n => n.id))
-    : 0
-  return maxId + 1
-}
-
 app.post('/api/db/mediaObjArr', (request, response) => {
   const body = request.body
 
@@ -121,17 +114,16 @@ app.post('/api/db/mediaObjArr', (request, response) => {
     })
   }
   
-  const mediaObj = {
-    id: generateId(),
+  const mediaObj = new MediaObj({
     dateCreated: new Date(),
     title: body.title,
     medium: body.medium,
     progress: body.progress || false
-  }
+  })
 
-  db.mediaObjArr = db.mediaObjArr.concat(mediaObj)
-
-  response.json(mediaObj)
+  mediaObj.save().then(savedMediaObj => {
+    response.json(savedMediaObj)
+  })
 })
 
 // more middleware
