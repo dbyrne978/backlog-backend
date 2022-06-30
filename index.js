@@ -102,23 +102,27 @@ app.post('/api/db/mediaObjArr', (request, response) => {
     })
   }
 
-  const titleMediumPairs = db.mediaObjArr.map(n => `${n.title}/${n.medium}`)
-  if (titleMediumPairs.includes(`${body.title}/${body.medium}`)) {
-    return response.status(400).json({ 
-      error: 'title/medium combo already exists' 
-    })
-  }
-  
-  const mediaObj = new MediaObj({
-    dateCreated: new Date(),
-    title: body.title,
-    medium: body.medium,
-    progress: body.progress || false
-  })
+  //save new mediaObj if title/medium combo doesn't already exist
+  MediaObj
+    .findOne({ title: body.title, medium: body.medium })
+    .then((existingTitleMediumCombo) => {
+      if (existingTitleMediumCombo) {
+        return response.status(400).json({
+          error: 'title/medium combo already exists'
+        })
+      } else {
+        const mediaObj = new MediaObj({
+          dateCreated: new Date(),
+          title: body.title,
+          medium: body.medium,
+          progress: body.progress || false
+        })
 
-  mediaObj.save().then(savedMediaObj => {
-    response.json(savedMediaObj)
-  })
+        mediaObj.save().then(savedMediaObj => {
+          response.json(savedMediaObj)
+        })
+      }
+    })
 })
 
 // more middleware
