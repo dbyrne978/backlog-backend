@@ -2,7 +2,7 @@ GET http://localhost:3001/api/mediaObjArr/3
 
 ###
 
-DELETE http://localhost:3001/api/mediaObjArr/3
+DELETE http://localhost:3001/api/mediaObjArr/62b8eddb4ec143fb3c413f2c
 
 ###
 
@@ -16,4 +16,11 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3001/api/mediaObjArr
+PUT http://localhost:3001/api/mediaObjArr/62bb8e34ebb102e259868136
+Content-Type: application/json
+
+{
+  "title": "test title 2",
+  "medium": "Book",
+  "progress": false
+}

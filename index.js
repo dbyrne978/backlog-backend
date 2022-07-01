@@ -61,20 +61,8 @@ app.delete('/api/mediaObjArr/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.post('/api/mediaObjArr', (request, response) => {
+app.post('/api/mediaObjArr', (request, response, next) => {
   const body = request.body
-
-  if (!body.title) {
-    return response.status(400).json({ 
-      error: 'title missing' 
-    })
-  }
-
-  if (!body.medium) {
-    return response.status(400).json({ 
-      error: 'medium missing' 
-    })
-  }
 
   //save new mediaObj if title/medium combo doesn't already exist
   MediaObj
@@ -92,9 +80,11 @@ app.post('/api/mediaObjArr', (request, response) => {
           progress: body.progress || false
         })
 
-        mediaObj.save().then(savedMediaObj => {
-          response.json(savedMediaObj)
-        })
+        mediaObj.save()
+          .then(savedMediaObj => {
+            response.json(savedMediaObj)
+          })
+          .catch(error => next(error))
       }
     })
 })
@@ -108,7 +98,11 @@ app.put('/api/mediaObjArr/:id', (request, response, next) => {
     progress: body.progress
   }
 
-  MediaObj.findByIdAndUpdate(request.params.id, mediaObj, { new: true })
+  MediaObj.findByIdAndUpdate(
+    request.params.id,
+    mediaObj,
+    { new: true, runValidators: true, context: 'query'}
+  )
     .then(updatedMediaObj => {
       response.json(updatedMediaObj)
     })
@@ -127,6 +121,8 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   } 
 
   next(error)

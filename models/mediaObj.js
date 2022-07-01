@@ -14,8 +14,14 @@ mongoose.connect(url)
 
 const mediaObjSchema = new mongoose.Schema({
   dateCreated: Date,
-  title: String,
-  medium: String,
+  title: {
+    type: String,
+    required: true
+  },
+  medium: {
+    type: String,
+    required: true
+  },
   progress: Boolean,
 })
 
