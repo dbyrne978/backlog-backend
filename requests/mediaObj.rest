@@ -1,19 +1,19 @@
-GET http://localhost:3001/api/db/mediaObjArr/3
+GET http://localhost:3001/api/mediaObjArr/3
 
 ###
 
-DELETE http://localhost:3001/api/db/mediaObjArr/3
+DELETE http://localhost:3001/api/mediaObjArr/3
 
 ###
 
-POST http://localhost:3001/api/db/mediaObjArr
+POST http://localhost:3001/api/mediaObjArr
 Content-Type: application/json
 
 {
   "title": "13 Sentinels",
-  "medium": "Book"
+  "medium": "Movie"
 }
 
 ###
 
-PUT http://localhost:3001/api/db/mediaObjArr
+PUT http://localhost:3001/api/mediaObjArr

@@ -5,42 +5,10 @@ const cors = require('cors')
 const app = express()
 const MediaObj = require('./models/mediaObj')
 
-// data
-let db = {
-  "userData": {
+// hard-coded data
+let userData = {
     "userName": "Dan"
-  },
-  "mediaObjArr": [
-    {
-      "id": 1,
-      "dateCreated": new Date(),
-      "title": "13 Sentinels",
-      "medium": "Video Game",
-      "progress": true
-    },
-    {
-      "id": 2,
-      "dateCreated": new Date(),
-      "title": "Buffy: the Vampire Slayer",
-      "medium": "TV Show",
-      "progress": false
-    },
-    {
-      "id": 3,
-      "dateCreated": new Date(),
-      "title": "Chronicle",
-      "medium": "Movie",
-      "progress": false
-    },
-    {
-      "id": 4,
-      "dateCreated": new Date(),
-      "title": "Blood of Elves",
-      "medium": "Book",
-      "progress": true
-    }
-  ]
-}
+  }
 
 // middleware
 app.use(express.json())
@@ -53,41 +21,49 @@ app.use(morgan('[:date[clf]] :method :url :status :res[content-length] - ' +
 
 // routes
 app.get('/info', (request, response) => {
-  response.send(
-    `<p>${db.userData.userName}'s backlog contains ` +
-        `${db.mediaObjArr.length} pieces of media</p>` +
-    `<p>${new Date()}</p>`
-  )
+  MediaObj.countDocuments({})
+    .then((numOfDocs) => {
+      response.send(
+        `<p>${userData.userName}'s backlog contains ` +
+            `${numOfDocs} pieces of media</p>` +
+        `<p>${new Date()}</p>`
+      )
+    })
 })
 
-app.get('/api/db', (request, response) => {
-  response.json(db)
-})
-
-app.get('/api/db/userData', (request, response) => {
+app.get('/api/userData', (request, response) => {
   response.json(db.userData)
 })
 
-app.get('/api/db/mediaObjArr', (request, response) => {
+app.get('/api/mediaObjArr', (request, response) => {
   MediaObj.find({}).then(mediaObjArr => {
     response.json(mediaObjArr)
   })
 })
 
-app.get('/api/db/mediaObjArr/:id', (request, response) => {
-  MediaObj.findById(request.params.id).then(mediaObj => {
-    response.json(mediaObj)
-  })
+app.get('/api/mediaObjArr/:id', (request, response) => {
+  MediaObj.findById(request.params.id)
+    .then(mediaObj => {
+      if (note) {
+        response.json(note)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(500).end()
+    })
 })
 
-app.delete('/api/db/mediaObjArr/:id', (request, response) => {
+app.delete('/api/mediaObjArr/:id', (request, response) => {
   const id = Number(request.params.id)
   db.mediaObjArr = db.mediaObjArr.filter(mediaObj => mediaObj.id !== id)
 
   response.status(204).end()
 })
 
-app.post('/api/db/mediaObjArr', (request, response) => {
+app.post('/api/mediaObjArr', (request, response) => {
   const body = request.body
 
   if (!body.title) {
