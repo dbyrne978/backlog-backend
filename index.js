@@ -7,8 +7,8 @@ const MediaObj = require('./models/mediaObj')
 
 // hard-coded data
 let userData = {
-    "userName": "Dan"
-  }
+  'userName': 'Dan'
+}
 
 // middleware
 app.use(express.json())
@@ -101,7 +101,7 @@ app.put('/api/mediaObjArr/:id', (request, response, next) => {
   MediaObj.findByIdAndUpdate(
     request.params.id,
     mediaObj,
-    { new: true, runValidators: true, context: 'query'}
+    { new: true, runValidators: true, context: 'query' }
   )
     .then(updatedMediaObj => {
       response.json(updatedMediaObj)
@@ -123,7 +123,7 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
-  } 
+  }
 
   next(error)
 }

@@ -10,7 +10,7 @@ POST http://localhost:3001/api/mediaObjArr
 Content-Type: application/json
 
 {
-  "title": "13 Sentinels",
+  "title": "",
   "medium": "Movie"
 }
 
@@ -20,7 +20,7 @@ PUT http://localhost:3001/api/mediaObjArr/62bb8e34ebb102e259868136
 Content-Type: application/json
 
 {
-  "title": "test title 2",
+  "title": "test title 2 test",
   "medium": "Book",
   "progress": false
 }
