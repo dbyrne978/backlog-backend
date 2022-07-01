@@ -41,19 +41,16 @@ app.get('/api/mediaObjArr', (request, response) => {
   })
 })
 
-app.get('/api/mediaObjArr/:id', (request, response) => {
+app.get('/api/mediaObjArr/:id', (request, response, next) => {
   MediaObj.findById(request.params.id)
     .then(mediaObj => {
-      if (note) {
-        response.json(note)
+      if (mediaObj) {
+        response.json(mediaObj)
       } else {
         response.status(404).end()
       }
     })
-    .catch(error => {
-      console.log(error)
-      response.status(500).end()
-    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/mediaObjArr/:id', (request, response) => {
@@ -107,6 +104,18 @@ const unknownEndpoint = (request, response) => {
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 // listener
 const PORT = process.env.PORT
