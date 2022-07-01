@@ -53,11 +53,12 @@ app.get('/api/mediaObjArr/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/mediaObjArr/:id', (request, response) => {
-  const id = Number(request.params.id)
-  db.mediaObjArr = db.mediaObjArr.filter(mediaObj => mediaObj.id !== id)
-
-  response.status(204).end()
+app.delete('/api/mediaObjArr/:id', (request, response, next) => {
+  MediaObj.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/mediaObjArr', (request, response) => {
@@ -96,6 +97,22 @@ app.post('/api/mediaObjArr', (request, response) => {
         })
       }
     })
+})
+
+app.put('/api/mediaObjArr/:id', (request, response, next) => {
+  const body = request.body
+
+  const mediaObj = {
+    title: body.title,
+    medium: body.medium,
+    progress: body.progress
+  }
+
+  MediaObj.findByIdAndUpdate(request.params.id, mediaObj, { new: true })
+    .then(updatedMediaObj => {
+      response.json(updatedMediaObj)
+    })
+    .catch(error => next(error))
 })
 
 // more middleware
