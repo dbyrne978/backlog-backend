@@ -32,7 +32,7 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/userData', (request, response) => {
-  response.json(db.userData)
+  response.json(userData)
 })
 
 app.get('/api/mediaObjArr', (request, response) => {
