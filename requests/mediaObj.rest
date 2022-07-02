@@ -2,7 +2,7 @@ GET http://localhost:3001/api/mediaObjArr/3
 
 ###
 
-DELETE http://localhost:3001/api/mediaObjArr/62b8eddb4ec143fb3c413f2c
+DELETE http://localhost:3001/api/mediaObjArr/62bb8e34ebb102e259868136
 
 ###
 

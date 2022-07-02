@@ -3,3 +3,4 @@ node_modules
 mongo.js
 mongo2.js
 .eslintrc.js
+.eslintignore
