@@ -1,1 +1,0 @@
-{"version":3,"file":"static/css/main.7b50b7f9.css","mappings":"AAAA,WACE,UAAW,CAEX,cAAe,CADf,eAEF","sources":["index.css"],"sourcesContent":[".media-ele {\n  color: grey;\n  padding-top: 3px;\n  font-size: 15px;\n}"],"names":[],"sourceRoot":""}

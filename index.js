@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const MediaObj = require('./models/mediaObj')
+const logger = require('./utils/logger')
 
 // hard-coded data
 let userData = {
@@ -117,7 +118,7 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  logger.error(error.message)
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
@@ -133,5 +134,5 @@ app.use(errorHandler)
 // listener
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+  logger.info(`Server running on port ${PORT}`)
 })
