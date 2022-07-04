@@ -5,11 +5,7 @@ const cors = require('cors')
 const logger = require('./utils/logger')
 const infoPageRouter = require('./controllers/infoPage')
 const mediaObjArrRouter = require('./controllers/mediaObjArr')
-
-// hard-coded data
-let userData = {
-  'userName': 'Dan'
-}
+const userDataRouter = require('./controllers/userData')
 
 // middleware
 app.use(express.json())
@@ -23,10 +19,7 @@ app.use(morgan('[:date[clf]] :method :url :status :res[content-length] - ' +
 // routes
 app.use('/info', infoPageRouter)
 app.use('/api/mediaObjArr', mediaObjArrRouter)
-
-app.get('/api/userData', (request, response) => {
-  response.json(userData)
-})
+app.use('/api/userData', userDataRouter)
 
 // more middleware
 const unknownEndpoint = (request, response) => {
