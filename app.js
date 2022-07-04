@@ -2,8 +2,8 @@ const morgan = require('morgan')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const MediaObj = require('./models/mediaObj')
 const logger = require('./utils/logger')
+const infoPageRouter = require('./controllers/infoPage')
 const mediaObjArrRouter = require('./controllers/mediaObjArr')
 
 // hard-coded data
@@ -21,18 +21,8 @@ app.use(morgan('[:date[clf]] :method :url :status :res[content-length] - ' +
     ':response-time ms -- :req-body'))
 
 // routes
+app.use('/info', infoPageRouter)
 app.use('/api/mediaObjArr', mediaObjArrRouter)
-
-app.get('/info', (request, response) => {
-  MediaObj.countDocuments({})
-    .then((numOfDocs) => {
-      response.send(
-        `<p>${userData.userName}'s backlog contains ` +
-            `${numOfDocs} pieces of media</p>` +
-        `<p>${new Date()}</p>`
-      )
-    })
-})
 
 app.get('/api/userData', (request, response) => {
   response.json(userData)
