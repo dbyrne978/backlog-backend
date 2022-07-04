@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
 const logger = require('../utils/logger')
+const config = require('./utils/config')
 
-const url = process.env.MONGODB_URI
+logger.info('connecting to', config.url)
 
-logger.info('connecting to', url)
-
-mongoose.connect(url)
+mongoose.connect(config.url)
   .then(() => {
     logger.info('connected to MongoDB')
   })
