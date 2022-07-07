@@ -4,12 +4,12 @@
   "description": "Back end for backlog project",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "build:ui": "rm -rf build && cd ../backlog/ && npm run build && cp -r build ../backlog-backend",
     "logs:prod": "heroku logs --tail",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/dbyrne978/backlog-backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mongoose": "^6.4.0",
@@ -30,6 +31,11 @@
   },
   "devDependencies": {
     "eslint": "^8.18.0",
-    "nodemon": "^2.0.16"
+    "jest": "^28.1.2",
+    "nodemon": "^2.0.16",
+    "supertest": "^6.2.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
