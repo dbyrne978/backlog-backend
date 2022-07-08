@@ -1,10 +1,9 @@
 const mediaObjArrRouter = require('express').Router()
 const MediaObj = require('../models/mediaObj')
 
-mediaObjArrRouter.get('/', (request, response) => {
-  MediaObj.find({}).then(mediaObjArr => {
-    response.json(mediaObjArr)
-  })
+mediaObjArrRouter.get('/', async (request, response) => {
+  const mediaObjArr = await MediaObj.find({})
+  response.json(mediaObjArr)
 })
 
 mediaObjArrRouter.get('/:id', (request, response, next) => {
