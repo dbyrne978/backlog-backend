@@ -76,3 +76,37 @@ test('mediaObj without title is not added', async () => {
 
   expect(resultingMediaObjArr).toHaveLength(helper.initialMediaObjArr.length)
 })
+
+test('a specific mediaObj can be viewed', async () => {
+  const startingMediaObjArr = await helper.mediaObjArrInDb()
+
+  const mediaObjToView = startingMediaObjArr[0]
+
+  const resultingMediaObj = await api
+    .get(`/api/mediaObjArr/${mediaObjToView.id}`)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const processedMediaObjToView = JSON.parse(JSON.stringify(mediaObjToView))
+
+  expect(resultingMediaObj.body).toEqual(processedMediaObjToView)
+})
+
+test('a mediaObj can be deleted', async () => {
+  const startingMediaObjArr = await helper.mediaObjArrInDb()
+  const mediaObjToDelete = startingMediaObjArr[0]
+
+  await api
+    .delete(`/api/mediaObjArr/${mediaObjToDelete.id}`)
+    .expect(204)
+
+  const resultingMediaObjArr = await helper.mediaObjArrInDb()
+
+  expect(resultingMediaObjArr).toHaveLength(
+    helper.initialMediaObjArr.length - 1
+  )
+
+  const titles = resultingMediaObjArr.map(r => r.title)
+
+  expect(titles).not.toContain(mediaObjToDelete.title)
+})
