@@ -3,27 +3,13 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const MediaObj = require('../models/mediaObj')
-
-const initialMediaObjArr = [
-  {
-    title: '13 Sentinels',
-    medium: 'Video Game',
-    date: new Date(),
-    progress: false,
-  },
-  {
-    title: 'John Wick',
-    medium: 'Movie',
-    date: new Date(),
-    progress: false,
-  },
-]
+const helper = require('./test_helper')
 
 beforeEach(async () => {
   await MediaObj.deleteMany({})
-  let mediaObj = new MediaObj(initialMediaObjArr[0])
+  let mediaObj = new MediaObj(helper.initialMediaObjArr[0])
   await mediaObj.save()
-  mediaObj = new MediaObj(initialMediaObjArr[1])
+  mediaObj = new MediaObj(helper.initialMediaObjArr[1])
   await mediaObj.save()
 })
 
@@ -37,7 +23,7 @@ test('mediaObjs are returned as json', async () => {
 test('all mediaObjs are returned', async () => {
   const response = await api.get('/api/mediaObjArr')
 
-  expect(response.body).toHaveLength(initialMediaObjArr.length)
+  expect(response.body).toHaveLength(helper.initialMediaObjArr.length)
 })
 
 test('a specific title is within the returned mediaObjs', async () => {
@@ -63,11 +49,10 @@ test('a valid mediaObj can be added', async () => {
     .expect(201)
     .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('/api/mediaObjArr')
+  const resultingMediaObjArr = await helper.mediaObjArrInDb()
+  expect(resultingMediaObjArr).toHaveLength(helper.initialMediaObjArr.length + 1)
 
-  const titles = response.body.map(r => r.title)
-
-  expect(response.body).toHaveLength(initialMediaObjArr.length + 1)
+  const titles = resultingMediaObjArr.map(r => r.title)
   expect(titles).toContain('John Wick 2')
 })
 
@@ -87,7 +72,7 @@ test('mediaObj without title is not added', async () => {
     .send(newMediaObj)
     .expect(400)
 
-  const response = await api.get('/api/mediaObjArr')
+  const resultingMediaObjArr = await helper.mediaObjArrInDb()
 
-  expect(response.body).toHaveLength(initialMediaObjArr.length)
+  expect(resultingMediaObjArr).toHaveLength(helper.initialMediaObjArr.length)
 })
