@@ -47,7 +47,7 @@ mediaObjArrRouter.post('/', (request, response, next) => {
 
         mediaObj.save()
           .then(savedMediaObj => {
-            response.json(savedMediaObj)
+            response.status(201).json(savedMediaObj)
           })
           .catch(error => next(error))
       }
