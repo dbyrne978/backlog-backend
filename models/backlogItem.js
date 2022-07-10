@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const mediaObjSchema = new mongoose.Schema({
+const backlogItemSchema = new mongoose.Schema({
   dateCreated: Date,
   title: {
     type: String,
@@ -13,7 +13,7 @@ const mediaObjSchema = new mongoose.Schema({
   progress: Boolean,
 })
 
-mediaObjSchema.set('toJSON', {
+backlogItemSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
@@ -21,4 +21,4 @@ mediaObjSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model('MediaObj', mediaObjSchema)
+module.exports = mongoose.model('BacklogItem', backlogItemSchema)

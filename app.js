@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const infoPageRouter = require('./controllers/infoPage')
-const mediaObjArrRouter = require('./controllers/mediaObjArr')
+const backlogItemsRouter = require('./controllers/backlogItems')
 const userDataRouter = require('./controllers/userData')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -28,7 +28,7 @@ app.use(middleware.morgan('[:date[clf]] :method :url :status ' +
 
 // routes
 app.use('/info', infoPageRouter)
-app.use('/api/mediaObjArr', mediaObjArrRouter)
+app.use('/api/backlogItems', backlogItemsRouter)
 app.use('/api/userData', userDataRouter)
 
 // more middleware

@@ -1,6 +1,6 @@
-const MediaObj = require('../models/mediaObj')
+const BacklogItem = require('../models/backlogItem')
 
-const initialMediaObjArr = [
+const initialBacklogItems = [
   {
     title: '13 Sentinels',
     medium: 'Video Game',
@@ -16,23 +16,23 @@ const initialMediaObjArr = [
 ]
 
 const nonExistingId = async () => {
-  const mediaObj = new MediaObj({
+  const backlogItem = new BacklogItem({
     title: 'nonExistingId_test',
     medium: 'Video Game',
     date: new Date(),
     progress: false,
   })
-  await mediaObj.save()
-  await mediaObj.remove()
+  await backlogItem.save()
+  await backlogItem.remove()
 
-  return mediaObj._id.toString()
+  return backlogItem._id.toString()
 }
 
-const mediaObjArrInDb = async () => {
-  const mediaObjArr = await MediaObj.find({})
-  return mediaObjArr.map(mediaObj => mediaObj.toJSON())
+const backlogItemsInDb = async () => {
+  const backlogItems = await BacklogItem.find({})
+  return backlogItems.map(backlogItem => backlogItem.toJSON())
 }
 
 module.exports = {
-  initialMediaObjArr, nonExistingId, mediaObjArrInDb
+  initialBacklogItems, nonExistingId, backlogItemsInDb
 }

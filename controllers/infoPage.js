@@ -1,10 +1,10 @@
 const infoPageRouter = require('express').Router()
-const MediaObj = require('../models/mediaObj')
+const BacklogItem = require('../models/backlogItem')
 
 let userData = { 'userName': 'Dan' }
 
 infoPageRouter.get('/', (request, response) => {
-  MediaObj.countDocuments({})
+  BacklogItem.countDocuments({})
     .then((numOfDocs) => {
       response.send(
         `<p>${userData.userName}'s backlog contains ` +
