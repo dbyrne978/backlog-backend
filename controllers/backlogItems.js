@@ -13,12 +13,9 @@ backlogItemsRouter.get('/:id', async (request, response) => {
     : response.status(404).end()
 })
 
-backlogItemsRouter.delete('/:id', (request, response, next) => {
-  BacklogItem.findByIdAndRemove(request.params.id)
-    .then(() => {
-      response.status(204).end()
-    })
-    .catch(error => next(error))
+backlogItemsRouter.delete('/:id', async (request, response) => {
+  await BacklogItem.findByIdAndRemove(request.params.id)
+  response.status(204).end()
 })
 
 backlogItemsRouter.post('/', (request, response, next) => {
