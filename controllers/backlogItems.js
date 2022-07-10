@@ -6,16 +6,11 @@ backlogItemsRouter.get('/', async (request, response) => {
   response.json(backlogItems)
 })
 
-backlogItemsRouter.get('/:id', (request, response, next) => {
-  BacklogItem.findById(request.params.id)
-    .then(backlogItem => {
-      if (backlogItem) {
-        response.json(backlogItem)
-      } else {
-        response.status(404).end()
-      }
-    })
-    .catch(error => next(error))
+backlogItemsRouter.get('/:id', async (request, response) => {
+  const backlogItem = await BacklogItem.findById(request.params.id)
+  backlogItem
+    ? response.json(backlogItem)
+    : response.status(404).end()
 })
 
 backlogItemsRouter.delete('/:id', (request, response, next) => {
