@@ -18,32 +18,25 @@ backlogItemsRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
-backlogItemsRouter.post('/', (request, response, next) => {
-  const body = request.body
+backlogItemsRouter.post('/', async (request, response) => {
+  const newBacklogItem = new BacklogItem({
+    dateCreated: new Date(),
+    title: request.body.title,
+    medium: request.body.medium,
+    progress: request.body.progress || false
+  })
 
-  //save new backlogItem if title/medium combo doesn't already exist
-  BacklogItem
-    .findOne({ title: body.title, medium: body.medium })
-    .then((existingTitleMediumCombo) => {
-      if (existingTitleMediumCombo) {
-        return response.status(400).json({
-          error: 'title/medium combo already exists'
-        })
-      } else {
-        const backlogItem = new BacklogItem({
-          dateCreated: new Date(),
-          title: body.title,
-          medium: body.medium,
-          progress: body.progress || false
-        })
+  const existingTitleMediumCombo = await BacklogItem.findOne({
+    title: newBacklogItem.title,
+    medium: newBacklogItem.medium
+  })
 
-        backlogItem.save()
-          .then(savedBacklogItem => {
-            response.status(201).json(savedBacklogItem)
-          })
-          .catch(error => next(error))
-      }
-    })
+  if (existingTitleMediumCombo) {
+    response.status(400).json({ error: 'title/medium combo already exists' })
+  } else {
+    const savedBacklogItem = await newBacklogItem.save()
+    response.status(201).json(savedBacklogItem)
+  }
 })
 
 backlogItemsRouter.put('/:id', (request, response, next) => {
