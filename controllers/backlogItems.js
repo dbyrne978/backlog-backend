@@ -39,24 +39,19 @@ backlogItemsRouter.post('/', async (request, response) => {
   }
 })
 
-backlogItemsRouter.put('/:id', (request, response, next) => {
-  const body = request.body
-
-  const backlogItem = {
-    title: body.title,
-    medium: body.medium,
-    progress: body.progress
+backlogItemsRouter.put('/:id', async (request, response) => {
+  const editedBacklogItem = {
+    title: request.body.title,
+    medium: request.body.medium,
+    progress: request.body.progress
   }
 
-  BacklogItem.findByIdAndUpdate(
+  const updatedBacklogItem = await BacklogItem.findByIdAndUpdate(
     request.params.id,
-    backlogItem,
+    editedBacklogItem,
     { new: true, runValidators: true, context: 'query' }
   )
-    .then(updatedBacklogItem => {
-      response.json(updatedBacklogItem)
-    })
-    .catch(error => next(error))
+  response.json(updatedBacklogItem)
 })
 
 module.exports = backlogItemsRouter

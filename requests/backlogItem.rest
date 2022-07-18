@@ -16,11 +16,11 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3001/api/backlogItems/62bb8e34ebb102e259868136
+PUT http://localhost:3001/api/backlogItems/62d59a6fc6aa9ff3cc56cc95
 Content-Type: application/json
 
 {
-  "title": "test title 2 test",
+  "title": "test title 3 test",
   "medium": "Book",
   "progress": false
 }
