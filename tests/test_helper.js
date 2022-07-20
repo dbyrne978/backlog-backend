@@ -4,13 +4,13 @@ const initialBacklogItems = [
   {
     title: '13 Sentinels',
     medium: 'Video Game',
-    date: new Date(),
+    dateCreated: new Date(),
     progress: false,
   },
   {
     title: 'John Wick',
     medium: 'Movie',
-    date: new Date(),
+    dateCreated: new Date(),
     progress: false,
   },
 ]

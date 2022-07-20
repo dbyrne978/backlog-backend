@@ -40,8 +40,8 @@ test('a valid backlogItem can be added', async () => {
   const newBacklogItem = {
     title: 'John Wick 2',
     medium: 'Movie',
-    date: new Date(),
-    progress: false,
+    dateCreated: new Date(),
+    progress: false
   }
 
   await api
@@ -57,15 +57,11 @@ test('a valid backlogItem can be added', async () => {
   expect(titles).toContain('John Wick 2')
 })
 
-afterAll(() => {
-  mongoose.connection.close()
-})
-
 test('backlogItem without title is not added', async () => {
   const newBacklogItem = {
     medium: 'Movie',
-    date: new Date(),
-    progress: false,
+    dateCreated: new Date(),
+    progress: false
   }
 
   await api
@@ -110,4 +106,24 @@ test('a backlogItem can be deleted', async () => {
   const titles = resultingBacklogItems.map(r => r.title)
 
   expect(titles).not.toContain(backlogItemToDelete.title)
+})
+
+test('progress defaults to false', async () => {
+  const newBacklogItem = {
+    title: 'John Wick 2',
+    medium: 'Movie',
+    dateCreated: new Date(),
+  }
+
+  const response = await api
+    .post('/api/backlogItems')
+    .send(newBacklogItem)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  expect(response.body.progress).toEqual(false)
+})
+
+afterAll(() => {
+  mongoose.connection.close()
 })
