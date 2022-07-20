@@ -7,10 +7,11 @@ const helper = require('./test_helper')
 
 beforeEach(async () => {
   await BacklogItem.deleteMany({})
-  let backlogItem = new BacklogItem(helper.initialBacklogItems[0])
-  await backlogItem.save()
-  backlogItem = new BacklogItem(helper.initialBacklogItems[1])
-  await backlogItem.save()
+
+  const backlogItemObjects = helper.initialBacklogItems
+    .map(backlogItem => new BacklogItem(backlogItem))
+  const promiseArray = backlogItemObjects.map(backlogItem => backlogItem.save())
+  await Promise.all(promiseArray)
 })
 
 test('backlogItems are returned as json', async () => {
