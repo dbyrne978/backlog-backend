@@ -12,3 +12,4 @@ TODO
 -delete button
 -'completed' status and complete button
 -'completed' list
+-backlogItem.titleMediumCombo field?
