@@ -13,3 +13,10 @@ TODO
 -'completed' status and complete button
 -'completed' list
 -backlogItem.titleMediumCombo field?
+-refactor to use different database for userdata
+    and each user's individual backlog
+-username validation
+  -alphanumeric only
+  -length>0
+-password validation
+  -length

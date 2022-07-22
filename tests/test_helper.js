@@ -1,4 +1,5 @@
 const BacklogItem = require('../models/backlogItem')
+const User = require('../models/user')
 
 const initialBacklogItems = [
   {
@@ -33,6 +34,14 @@ const backlogItemsInDb = async () => {
   return backlogItems.map(backlogItem => backlogItem.toJSON())
 }
 
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(u => u.toJSON())
+}
+
 module.exports = {
-  initialBacklogItems, nonExistingId, backlogItemsInDb
+  initialBacklogItems,
+  nonExistingId,
+  backlogItemsInDb,
+  usersInDb,
 }

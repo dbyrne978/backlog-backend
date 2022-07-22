@@ -11,6 +11,10 @@ const backlogItemSchema = new mongoose.Schema({
     required: true
   },
   progress: Boolean,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
 backlogItemSchema.set('toJSON', {
