@@ -10,8 +10,9 @@ POST http://localhost:3001/api/backlogItems
 Content-Type: application/json
 
 {
-  "title": "",
-  "medium": "Movie"
+  "title": "test4user4",
+  "medium": "Movie",
+  "userId": "62d9f363ee79505656a1d81c"
 }
 
 ###

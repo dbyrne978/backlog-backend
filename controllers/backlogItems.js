@@ -1,5 +1,6 @@
 const backlogItemsRouter = require('express').Router()
 const BacklogItem = require('../models/backlogItem')
+const User = require('../models/user')
 
 backlogItemsRouter.get('/', async (request, response) => {
   const backlogItems = await BacklogItem.find({})
@@ -19,11 +20,14 @@ backlogItemsRouter.delete('/:id', async (request, response) => {
 })
 
 backlogItemsRouter.post('/', async (request, response) => {
+  const user = await User.findById(request.body.userId)
+
   const newBacklogItem = new BacklogItem({
     dateCreated: new Date(),
     title: request.body.title,
     medium: request.body.medium,
-    progress: request.body.progress || false
+    progress: request.body.progress || false,
+    user: user._id,
   })
 
   const existingTitleMediumCombo = await BacklogItem.findOne({
@@ -35,6 +39,8 @@ backlogItemsRouter.post('/', async (request, response) => {
     response.status(400).json({ error: 'title/medium combo already exists' })
   } else {
     const savedBacklogItem = await newBacklogItem.save()
+    user.backlogItems = user.backlogItems.concat(savedBacklogItem._id)
+    await user.save()
     response.status(201).json(savedBacklogItem)
   }
 })
