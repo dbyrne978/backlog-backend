@@ -5,6 +5,7 @@ const cors = require('cors')
 const infoPageRouter = require('./controllers/infoPage')
 const backlogItemsRouter = require('./controllers/backlogItems')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const config = require('./utils/config')
@@ -28,6 +29,7 @@ app.use(middleware.morgan('[:date[clf]] :method :url :status ' +
     ':res[content-length] - :response-time ms -- :req-body'))
 
 // routes
+app.use('/api/login', loginRouter)
 app.use('/info', infoPageRouter)
 app.use('/api/backlogItems', backlogItemsRouter)
 app.use('/api/users', usersRouter)
