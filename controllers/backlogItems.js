@@ -32,7 +32,8 @@ backlogItemsRouter.post('/', async (request, response) => {
 
   const existingTitleMediumCombo = await BacklogItem.findOne({
     title: newBacklogItem.title,
-    medium: newBacklogItem.medium
+    medium: newBacklogItem.medium,
+    user: newBacklogItem.user,
   })
 
   if (existingTitleMediumCombo) {
