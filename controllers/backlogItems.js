@@ -3,7 +3,8 @@ const BacklogItem = require('../models/backlogItem')
 const User = require('../models/user')
 
 backlogItemsRouter.get('/', async (request, response) => {
-  const backlogItems = await BacklogItem.find({})
+  const backlogItems = await BacklogItem
+    .find({}).populate('user', { username: 1 })
   response.json(backlogItems)
 })
 
