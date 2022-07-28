@@ -1,6 +1,7 @@
 const backlogItemsRouter = require('express').Router()
 const BacklogItem = require('../models/backlogItem')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 backlogItemsRouter.get('/', async (request, response) => {
   const backlogItems = await BacklogItem
@@ -20,8 +21,21 @@ backlogItemsRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}
+
 backlogItemsRouter.post('/', async (request, response) => {
-  const user = await User.findById(request.body.userId)
+  const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
 
   const newBacklogItem = new BacklogItem({
     dateCreated: new Date(),
