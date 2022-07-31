@@ -8,11 +8,11 @@ DELETE http://localhost:3001/api/backlogItems/62ca3189731cc35a8f0da656
 
 POST http://localhost:3001/api/backlogItems
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyNSIsImlkIjoiNjJkZGJlZjljMWRkZWJiZGY1MjBiMmYxIiwiaWF0IjoxNjU5MDUxNzg3fQ.FkKETbQA2vGA8OhuyHM4N0aB2Ofmw01mmlgpQXf7aZo
 
 {
   "title": "test4user6",
-  "medium": "Movie",
-  "userId": "62d9f410ee79505656a1d822"
+  "medium": "Movie"
 }
 
 ###

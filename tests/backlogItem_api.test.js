@@ -3,18 +3,34 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const BacklogItem = require('../models/backlogItem')
+const User = require('../models/user')
 const helper = require('./test_helper')
+const bcrypt = require('bcrypt')
+
+let userToken = null
 
 beforeEach(async () => {
   await BacklogItem.deleteMany({})
-
   const backlogItemObjects = helper.initialBacklogItems
     .map(backlogItem => new BacklogItem(backlogItem))
   const promiseArray = backlogItemObjects.map(backlogItem => backlogItem.save())
   await Promise.all(promiseArray)
+
+  await User.deleteMany({})
+  const passwordHash = await bcrypt.hash('testpw', 10)
+  const user = new User({ username: 'backlogItemTestUser', passwordHash })
+  await user.save()
+
+  await api
+    .post('/api/login')
+    .send({
+      'username': 'backlogItemTestUser',
+      'password': 'testpw'
+    })
+    .expect(res => userToken = res.body.token)
 })
 
-describe('when there is initially some backog items saved', () => {
+describe('when there is initially some backlog items saved', () => {
   test('backlogItems are returned as json', async () => {
     await api
       .get('/api/backlogItems')
@@ -44,14 +60,14 @@ describe('viewing a specific backlogItem', () => {
 
     const backlogItemToView = startingBacklogItems[0]
 
-    const resultingBacklogItem = await api
+    const resultingBacklogItemResp = await api
       .get(`/api/backlogItems/${backlogItemToView.id}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
     const processedBacklogItemToView = JSON.parse(JSON.stringify(backlogItemToView))
 
-    expect(resultingBacklogItem.body).toEqual(processedBacklogItemToView)
+    expect(resultingBacklogItemResp.body).toEqual(processedBacklogItemToView)
   })
 
   test('fails with statuscode 404 if note does not exist', async () => {
@@ -76,6 +92,7 @@ describe('addition of a new backlog item', () => {
 
     await api
       .post('/api/backlogItems')
+      .set('Authorization', 'Bearer ' + userToken)
       .send(newBacklogItem)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -96,6 +113,7 @@ describe('addition of a new backlog item', () => {
 
     await api
       .post('/api/backlogItems')
+      .set('Authorization', 'Bearer ' + userToken)
       .send(newBacklogItem)
       .expect(400)
 
@@ -113,6 +131,7 @@ describe('addition of a new backlog item', () => {
 
     const response = await api
       .post('/api/backlogItems')
+      .set('Authorization', 'Bearer ' + userToken)
       .send(newBacklogItem)
       .expect(201)
       .expect('Content-Type', /application\/json/)

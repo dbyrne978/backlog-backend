@@ -20,3 +20,4 @@ TODO
   -length>0
 -password validation
   -length
+user token for deletion
